@@ -1,5 +1,7 @@
 from django.urls import path
 from . import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('', views.cart, name='cart'),
@@ -8,4 +10,4 @@ urlpatterns = [
     path('remove_cart_item/<int:product_id>/<int:cart_item_id>', views.remove_cart_item, name='remove_cart_item'),
 
     path('checkout/', views.checkout, name='checkout'),
-]
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

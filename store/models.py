@@ -2,13 +2,13 @@ from django.db import models
 from category.models import Category
 from django.urls import reverse
 
-# Create your models here.
+# Product Model
 class Product(models.Model):
     product_name    = models.CharField(max_length=200, unique=True)
     slug            = models.SlugField(max_length=200, unique=True)
     description     = models.TextField(max_length=500, blank=True)
     price           = models.IntegerField()
-    images          = models.CharField(max_length=200)
+    image           = models.ImageField(upload_to='products/images/', blank=True, null=True)
     stock           = models.IntegerField()
     is_available    = models.BooleanField(default=True)
     category        = models.ForeignKey(Category, on_delete=models.CASCADE)
@@ -21,6 +21,7 @@ class Product(models.Model):
     def __str__(self):
         return self.product_name
 
+# Variation Manager
 class VariationManager(models.Manager):
     def colors(self):
         return super(VariationManager, self).filter(variation_category='color', is_active=True)
@@ -29,11 +30,11 @@ class VariationManager(models.Manager):
         return super(VariationManager, self).filter(variation_category='size', is_active=True)
 
 variation_category_choice = (
-    ('color', 'color'),
-    ('size', 'size'),
+    ('color', 'Color'),
+    ('size', 'Size'),
 )
 
-
+# Variation Model
 class Variation(models.Model):
     product             = models.ForeignKey(Product, on_delete=models.CASCADE)
     variation_category  = models.CharField(max_length=100, choices=variation_category_choice)
@@ -43,5 +44,5 @@ class Variation(models.Model):
 
     objects = VariationManager()
 
-    def __str__(self) :
+    def __str__(self):
         return self.variation_value
