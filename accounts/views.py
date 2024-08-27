@@ -118,7 +118,7 @@ def login(request):
                     nextPage = params['next']
                     return redirect(nextPage)
             except:
-                return redirect('home')
+                return redirect('store')
         else:
             messages.error(request, 'Invalid login credentials.')
             return redirect('login')
